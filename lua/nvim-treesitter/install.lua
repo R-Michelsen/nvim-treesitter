@@ -117,15 +117,29 @@ local function select_mv_cmd(compile_location, parser_lib_name)
   end
 end
 
+<<<<<<< HEAD
 local function run_install(cache_folder, install_folder, lang, repo, with_sync)
   parsers.reset_cache()
 
   local path_sep = utils.get_path_sep()
+=======
+local function run_install(cache_folder, package_path, lang, repo, with_sync)
+  parsers.reset_cache()
+
+  local path_sep = '/'
+  if fn.has('win32') == 1 then
+    path_sep = '\\'
+  end
+>>>>>>> 9af4dfa7b098f99c107d0eb4d1bdeb088e16d2ae
 
   local project_name = 'tree-sitter-'..lang
   -- compile_location only needed for typescript installs.
   local compile_location = cache_folder..path_sep..(repo.location or project_name)
+<<<<<<< HEAD
   local parser_lib_name = install_folder..path_sep..lang..".so"
+=======
+  local parser_lib_name = package_path..path_sep.."parser"..path_sep..lang..".so"
+>>>>>>> 9af4dfa7b098f99c107d0eb4d1bdeb088e16d2ae
 
   local compilers = { "cc", "gcc", "clang" }
   local cc = select_executable(compilers)
@@ -266,10 +280,19 @@ function M.uninstall(lang)
       M.uninstall(lang)
     end
   elseif lang then
+<<<<<<< HEAD
     local install_dir, err = utils.get_parser_install_dir()
     if err then return api.nvim_err_writeln(err) end
 
     local parser_lib = install_dir..path_sep..lang..".so"
+=======
+    local package_path, err = utils.get_package_path()
+    if err then
+      print(err)
+      return
+    end
+    local parser_lib = package_path..path_sep.."parser"..path_sep..lang..".so"
+>>>>>>> 9af4dfa7b098f99c107d0eb4d1bdeb088e16d2ae
 
     local command_list = {
       select_uninstall_rm_cmd(lang, parser_lib)
